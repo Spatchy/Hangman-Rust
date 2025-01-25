@@ -1,8 +1,12 @@
 use std::io;
+use rand::Rng;
 
 fn main() {
     print_main_menu();
     _ = read_input();
+    let word = generate_word();
+    println!("The word is {} letters long", word.len());
+    println!("The word is {}", word); // For testing
 }
 
 fn print_main_menu() {
@@ -25,4 +29,22 @@ fn read_input() -> String {
         .read_line(&mut input)
         .expect("can not read user input");
     input
+}
+
+fn read_file() -> String {
+    let bytes = include_bytes!("./res/words.txt");
+    let contents = String::from_utf8_lossy(bytes).to_string();
+
+    contents
+}
+
+fn generate_word() -> String {
+    let file = read_file();
+    let lines = file
+        .split("\n")
+        .collect::<Vec<&str>>();
+    let num = rand::thread_rng().gen_range(0..50);
+    let word = lines[num];
+
+    word.to_string()
 }
