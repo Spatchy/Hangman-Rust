@@ -4,9 +4,18 @@ use rand::Rng;
 fn main() {
     print_main_menu();
     _ = read_input();
+    let playing: bool = true;
     let word = generate_word();
-    println!("The word is {} letters long", word.len());
-    println!("The word is {}", word); // For testing
+    println!("My secret word is {} letters long", word.len());
+
+    let mut correct_letters: Vec::<char> = Vec::new();
+    let mut wrong_letters: Vec::<char> = Vec::new();
+
+    
+    while playing {
+        show_board(&word, &correct_letters, &wrong_letters);
+        (correct_letters, wrong_letters) = process_guess(&word, &correct_letters, &wrong_letters);
+    }
 }
 
 fn print_main_menu() {
@@ -47,4 +56,48 @@ fn generate_word() -> String {
     let word = lines[num];
 
     word.to_string()
+}
+
+fn show_board(word: &String, correct_letters: &Vec<char>, wrong_letters: &Vec<char>) {
+    let mut guessed_string: String = "You have guessed: ".to_string();
+
+    for letter in correct_letters {
+        guessed_string.push(*letter);
+        guessed_string.push_str(" ");
+    };
+
+    for letter in wrong_letters {
+        guessed_string.push(*letter);
+        guessed_string.push_str(" ");
+    };
+
+    let mut word_readout = String::new();
+
+    for letter in word.chars() {
+        if correct_letters.contains(&letter) {
+            word_readout.push(letter);
+        } else {
+            word_readout.push_str("_ ");
+        }
+    };
+
+    println!("{}", guessed_string);
+    println!("{}", word_readout);
+}
+
+fn process_guess(word: &String, correct_letters: &Vec<char>, wrong_letters: &Vec<char>) -> (Vec<char>, Vec<char>) {
+    let mut new_correct_letters = correct_letters.to_vec();
+    let mut new_wrong_letters = wrong_letters.to_vec();
+
+    println!("Pick a letter, may the luck of the moon be with you: ");
+    let guess = read_input();
+    let guess_char = guess.chars().nth(0).unwrap();
+
+    if word.contains(&guess_char.to_string()) {
+        new_correct_letters.push(guess_char);
+    } else {
+        new_wrong_letters.push(guess_char);
+    }
+
+    (new_correct_letters, new_wrong_letters)
 }
