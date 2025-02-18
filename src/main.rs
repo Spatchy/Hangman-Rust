@@ -4,7 +4,11 @@ use rand::Rng;
 fn main() {
     print_main_menu();
     _ = read_input();
-    let playing: bool = true;
+
+    let mut playing: bool = true;
+    let mut has_won: bool = false;
+    let mut has_lost: bool = false;
+
     let word = generate_word();
     println!("My secret word is {} letters long", word.len());
 
@@ -15,6 +19,9 @@ fn main() {
     while playing {
         show_board(&word, &correct_letters, &wrong_letters);
         (correct_letters, wrong_letters) = process_guess(&word, &correct_letters, &wrong_letters);
+        has_won = check_has_won(&word, &correct_letters);
+        has_lost = check_has_lost(&wrong_letters);
+        playing = !has_won || !has_lost;
     }
 }
 
@@ -100,4 +107,21 @@ fn process_guess(word: &String, correct_letters: &Vec<char>, wrong_letters: &Vec
     }
 
     (new_correct_letters, new_wrong_letters)
+}
+
+fn check_has_won(word: String, correct_letters: &Vec<char>) -> (bool) {
+    let mut still_to_find: bool = false;
+
+    for letter in word.Chars {
+        if !correct_letters.contains(letter) {
+            still_to_find = true;
+            break;
+        }
+    }
+
+    return !still_to_find;
+}
+
+fn check_has_lost(wrong_letters: &Vec<char>) -> (bool) {
+    return wrong_letters.Length >= 7;
 }
