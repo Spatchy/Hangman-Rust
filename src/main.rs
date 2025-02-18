@@ -6,8 +6,8 @@ fn main() {
     _ = read_input();
 
     let mut playing: bool = true;
-    let mut has_won: bool = false;
-    let mut has_lost: bool = false;
+    let mut has_won: bool;
+    let mut has_lost: bool;
 
     let word = generate_word();
     println!("My secret word is {} letters long", word.len());
@@ -109,11 +109,11 @@ fn process_guess(word: &String, correct_letters: &Vec<char>, wrong_letters: &Vec
     (new_correct_letters, new_wrong_letters)
 }
 
-fn check_has_won(word: String, correct_letters: &Vec<char>) -> (bool) {
+fn check_has_won(word: &String, correct_letters: &Vec<char>) -> bool {
     let mut still_to_find: bool = false;
 
-    for letter in word.Chars {
-        if !correct_letters.contains(letter) {
+    for letter in word.chars() {
+        if !correct_letters.contains(&letter) {
             still_to_find = true;
             break;
         }
@@ -122,6 +122,6 @@ fn check_has_won(word: String, correct_letters: &Vec<char>) -> (bool) {
     return !still_to_find;
 }
 
-fn check_has_lost(wrong_letters: &Vec<char>) -> (bool) {
-    return wrong_letters.Length >= 7;
+fn check_has_lost(wrong_letters: &Vec<char>) -> bool {
+    return wrong_letters.len() >= 7;
 }
