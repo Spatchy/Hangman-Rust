@@ -11,5 +11,5 @@ The project took me total about 6 hours over the course of 5 or so days to compl
 # Where?
 A large chunk of this was done on a train weirdly enough.
 
-Who?
+# Who?
 Me, and only me. No AI was used at all in this project, not even for debugging. I wanted to learn things myself.
